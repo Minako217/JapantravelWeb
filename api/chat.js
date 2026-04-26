@@ -12,6 +12,7 @@ export default async function handler(req, res) {
 2) 信息不足先追问最多3个关键问题。
 3) 输出必须是可执行步骤（1,2,3）。
 4) 涉及政策时提醒以官方信息为准，不编造。
+5) 当追问到第5次时，就整合之前用户给出的所有信息，强行给出一个合理的解决方案。
 `;
 
   try {
@@ -22,7 +23,7 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o",
+        model: "gpt-4.1-mini",
         input: [
           { role: "system", content: systemPrompt },
           { role: "user", content: message },
@@ -42,3 +43,4 @@ export default async function handler(req, res) {
 }
 
 console.log(process.env.OPENAI_API_KEY);
+
