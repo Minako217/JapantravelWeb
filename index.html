@@ -1,100 +1,483 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>赴日留学指南 - 留学生落地全攻略</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>赴日留学指南 - 留学生落地全攻略</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Place this before </body> in your static page -->
+    <style>
+      #student-ai-fab {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 9999;
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 16px;
+        color: #fff;
+        background: #2563eb;
+        cursor: pointer;
+      }
+      #student-ai-panel {
+        position: fixed;
+        right: 20px;
+        bottom: 72px;
+        width: 360px;
+        height: 520px;
+        display: none;
+        flex-direction: column;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+        z-index: 9999;
+      }
+      #student-ai-head {
+        padding: 10px 12px;
+        border-bottom: 1px solid #eee;
+        font-weight: 700;
+      }
+      #student-ai-msgs {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px;
+      }
+      #student-ai-form {
+        display: flex;
+        border-top: 1px solid #eee;
+      }
+      #student-ai-input {
+        flex: 1;
+        border: 0;
+        padding: 10px;
+        outline: none;
+      }
+      #student-ai-send {
+        border: 0;
+        padding: 0 14px;
+        color: #fff;
+        background: #2563eb;
+        cursor: pointer;
+      }
+      .u {
+        text-align: right;
+        margin: 10px 0;
+        white-space: pre-wrap;
+      }
+      .a {
+        text-align: left;
+        margin: 10px 0;
+        white-space: pre-wrap;
+        line-height: 1.65;
+      }
+      .a ul,
+      .a ol {
+        margin: 6px 0 6px 1.2em;
+        padding: 0;
+      }
+      .a li {
+        margin: 4px 0;
+      }
+    </style>
 
-<header class="site-header">
-  <nav class="nav-inner">
-    <a href="index.html" class="nav-logo">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      赴日留学指南
-    </a>
-    <button class="nav-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-    <ul class="nav-links">
-      <li><a href="index.html" class="active">首页</a></li>
-      <li><a href="before-landing.html">落地前</a></li>
-      <li><a href="at-airport.html">落地中</a></li>
-      <li><a href="first-week.html">一周内</a></li>
-      <li><a href="long-term.html">长期生活</a></li>
-    </ul>
-  </nav>
-</header>
-
-<section class="hero">
-  <div class="hero-label">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-    面向大学院及以上留学生
-  </div>
-  <h1>赴日留学<span class="accent">落地全攻略</span></h1>
-  <p class="hero-desc">从出发前的准备到长期生活的方方面面，按时间线为你梳理赴日留学的每一个关键步骤。</p>
-</section>
-
-<section class="nav-cards">
-
-  <a href="before-landing.html" class="nav-card">
-    <div class="nav-card-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    <button id="student-ai-fab">留学AI助手</button>
+    <div id="student-ai-panel">
+      <div id="student-ai-head">留学AI助手</div>
+      <div id="student-ai-msgs">
+        <div class="a">
+          你好，我可以根据你当前阶段（落地前/机场/一周内/长期）给你下一步建议。
+        </div>
+      </div>
+      <div id="student-ai-form">
+        <input
+          id="student-ai-input"
+          placeholder="例如：我到东京第二天，先办什么？"
+        />
+        <button id="student-ai-send">发送</button>
+      </div>
     </div>
-    <span class="nav-card-step">STEP 1</span>
-    <h3>落地前准备</h3>
-    <p>在留资格(COE)申请、签证办理、行李准备、租房指南、资金换汇、流量卡选购等出发前必做事项。</p>
-    <span class="nav-card-arrow">
-      查看详情
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </span>
-  </a>
 
-  <a href="at-airport.html" class="nav-card">
-    <div class="nav-card-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
-    </div>
-    <span class="nav-card-step">STEP 2</span>
-    <h3>落地中 (机场阶段)</h3>
-    <p>入境流程、Visit Japan Web填写、在留卡领取、行李搬运方案、从机场到市区的交通攻略。</p>
-    <span class="nav-card-arrow">
-      查看详情
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </span>
-  </a>
+    <script>
+      (() => {
+        const API_BASE = "https://japan-travel-web-seven.vercel.app"; // e.g. https://student-ai-api.vercel.app
+        const STORAGE_KEY = "student_ai_session_v1";
 
-  <a href="first-week.html" class="nav-card">
-    <div class="nav-card-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
-    </div>
-    <span class="nav-card-step">STEP 3</span>
-    <h3>落地后一周内必做</h3>
-    <p>家具添置、区役所住所登记、国民健康保险、电话卡办理、银行开户、实用日语速查清单。</p>
-    <span class="nav-card-arrow">
-      查看详情
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </span>
-  </a>
+        const fab = document.getElementById("student-ai-fab");
+        const panel = document.getElementById("student-ai-panel");
+        const msgs = document.getElementById("student-ai-msgs");
+        const input = document.getElementById("student-ai-input");
+        const send = document.getElementById("student-ai-send");
 
-  <a href="long-term.html" class="nav-card">
-    <div class="nav-card-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    </div>
-    <span class="nav-card-step">STEP 4</span>
-    <h3>落地后长期生活</h3>
-    <p>衣食住行全攻略、驾照换取与考取、娱乐推荐、实用App、防灾对策等长期生活实用信息。</p>
-    <span class="nav-card-arrow">
-      查看详情
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </span>
-  </a>
+        function getSession() {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) return JSON.parse(raw);
+          const session = {
+            external_user_id: `web_${crypto.randomUUID()}`,
+            conversation_id: null,
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+          return session;
+        }
 
-</section>
+        function setSession(partial) {
+          const merged = { ...getSession(), ...partial };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        }
 
-<footer class="site-footer">
-  <p>赴日留学指南 &copy; 2026 - 助力每一位留学生顺利开启日本新生活</p>
-</footer>
+        function escapeHtml(str) {
+          return str
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;");
+        }
 
-</body>
+        function normalizeListBreaks(text) {
+          return text
+            .replace(/\s*(\d+\.)\s*/g, "\n$1 ")
+            .replace(/\s*(-)\s+/g, "\n- ")
+            .replace(/\n{3,}/g, "\n\n")
+            .trim();
+        }
+
+        function markdownToHtml(raw) {
+          const escaped = escapeHtml(normalizeListBreaks(raw));
+          const lines = escaped.split("\n");
+          const html = [];
+          let inUl = false;
+          let inOl = false;
+          let orderedCount = 0;
+
+          function closeLists() {
+            if (inUl) {
+              html.push("</ul>");
+              inUl = false;
+            }
+            if (inOl) {
+              html.push("</ol>");
+              inOl = false;
+            }
+          }
+
+          for (const line of lines) {
+            const t = line.trim();
+            if (!t) {
+              closeLists();
+              continue;
+            }
+
+            const olMatch = t.match(/^\d+\.\s+(.*)$/);
+            if (olMatch) {
+              if (!inOl) {
+                closeLists();
+                html.push(`<ol start="${orderedCount + 1}">`);
+                inOl = true;
+              }
+              orderedCount += 1;
+              html.push(`<li>${olMatch[1]}</li>`);
+              continue;
+            }
+
+            const ulMatch = t.match(/^-\s+(.*)$/);
+            if (ulMatch) {
+              if (!inUl) {
+                closeLists();
+                html.push("<ul>");
+                inUl = true;
+              }
+              html.push(`<li>${ulMatch[1]}</li>`);
+              continue;
+            }
+
+            closeLists();
+            html.push(`<p>${t}</p>`);
+          }
+
+          closeLists();
+          return html.join("");
+        }
+
+        function add(text, cls) {
+          const div = document.createElement("div");
+          div.className = cls;
+          if (cls === "a") {
+            div.innerHTML = markdownToHtml(text);
+          } else {
+            div.textContent = text;
+          }
+          msgs.appendChild(div);
+          msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        async function ask() {
+          const message = input.value.trim();
+          if (!message) return;
+          add(message, "u");
+          input.value = "";
+          add("正在思考中...", "a");
+
+          const session = getSession();
+          try {
+            const res = await fetch(`${API_BASE}/api/chat`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                external_user_id: session.external_user_id,
+                conversation_id: session.conversation_id,
+                message,
+              }),
+            });
+
+            const data = await res.json();
+            const reply = data.reply || "暂时无法回答，请稍后重试。";
+            msgs.lastChild.innerHTML = markdownToHtml(reply);
+            if (data.conversation_id)
+              setSession({ conversation_id: data.conversation_id });
+          } catch (err) {
+            msgs.lastChild.innerHTML = markdownToHtml("网络异常，请稍后重试。");
+          }
+        }
+
+        fab.addEventListener("click", () => {
+          panel.style.display =
+            panel.style.display === "flex" ? "none" : "flex";
+        });
+        send.addEventListener("click", ask);
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") ask();
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path
+              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            />
+          </svg>
+          赴日留学指南
+        </a>
+        <button
+          class="nav-menu-btn"
+          onclick="
+            document.querySelector('.nav-links').classList.toggle('show')
+          "
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">首页</a></li>
+          <li><a href="before-landing.html">落地前</a></li>
+          <li><a href="at-airport.html">落地中</a></li>
+          <li><a href="first-week.html">一周内</a></li>
+          <li><a href="long-term.html">长期生活</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-label">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+        面向大学院及以上留学生
+      </div>
+      <h1>赴日留学<span class="accent">落地全攻略</span></h1>
+      <p class="hero-desc">
+        从出发前的准备到长期生活的方方面面，按时间线为你梳理赴日留学的每一个关键步骤。
+      </p>
+    </section>
+
+    <section class="nav-cards">
+      <a href="before-landing.html" class="nav-card">
+        <div class="nav-card-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+        </div>
+        <span class="nav-card-step">STEP 1</span>
+        <h3>落地前准备</h3>
+        <p>
+          在留资格(COE)申请、签证办理、行李准备、租房指南、资金换汇、流量卡选购等出发前必做事项。
+        </p>
+        <span class="nav-card-arrow">
+          查看详情
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </span>
+      </a>
+
+      <a href="at-airport.html" class="nav-card">
+        <div class="nav-card-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"
+            />
+          </svg>
+        </div>
+        <span class="nav-card-step">STEP 2</span>
+        <h3>落地中 (机场阶段)</h3>
+        <p>
+          入境流程、Visit Japan
+          Web填写、在留卡领取、行李搬运方案、从机场到市区的交通攻略。
+        </p>
+        <span class="nav-card-arrow">
+          查看详情
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </span>
+      </a>
+
+      <a href="first-week.html" class="nav-card">
+        <div class="nav-card-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+            <path d="M8 14h.01" />
+            <path d="M12 14h.01" />
+            <path d="M16 14h.01" />
+            <path d="M8 18h.01" />
+            <path d="M12 18h.01" />
+          </svg>
+        </div>
+        <span class="nav-card-step">STEP 3</span>
+        <h3>落地后一周内必做</h3>
+        <p>
+          家具添置、区役所住所登记、国民健康保险、电话卡办理、银行开户、实用日语速查清单。
+        </p>
+        <span class="nav-card-arrow">
+          查看详情
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </span>
+      </a>
+
+      <a href="long-term.html" class="nav-card">
+        <div class="nav-card-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+        </div>
+        <span class="nav-card-step">STEP 4</span>
+        <h3>落地后长期生活</h3>
+        <p>
+          衣食住行全攻略、驾照换取与考取、娱乐推荐、实用App、防灾对策等长期生活实用信息。
+        </p>
+        <span class="nav-card-arrow">
+          查看详情
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </span>
+      </a>
+    </section>
+
+    <footer class="site-footer">
+      <p>赴日留学指南 &copy; 2026 - 助力每一位留学生顺利开启日本新生活</p>
+    </footer>
+  </body>
 </html>

@@ -17,5 +17,12 @@
   "bugs": {
     "url": "https://github.com/Minako217/JapantravelWeb/issues"
   },
-  "homepage": "https://github.com/Minako217/JapantravelWeb#readme"
+  "homepage": "https://github.com/Minako217/JapantravelWeb#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.52.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "openai": "^4.104.0"
+  }
 }
